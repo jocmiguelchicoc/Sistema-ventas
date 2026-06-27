@@ -1,2 +1,6 @@
 # Excluir carpeta de guías de estudio del repositorio de GitHub
 guias_ayuda/
+
+# Excluir informes de normalización de GitHub
+mini-proyecto-normalizacion-ventas/informe_normalizacion.odt
+mini-proyecto-normalizacion-ventas/informe_normalizacion.pdf
