@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres16_ventas
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ventas_db
+      POSTGRES_USER: ventas_user
+      POSTGRES_PASSWORD: ventas_pass
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_ventas_data:/var/lib/postgresql/data
+      - ../mini-proyecto-normalizacion-ventas/sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ventas_user -d ventas_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ventas_network
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin_ventas
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ventas.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8085:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ventas_network
+
+volumes:
+  postgres_ventas_data:
+
+networks:
+  ventas_network:
+    driver: bridge
